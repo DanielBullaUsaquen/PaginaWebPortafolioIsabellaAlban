@@ -1,0 +1,36 @@
+# build
+dist/
+.astro/
+.vercel/
+
+# dependencias
+node_modules/
+
+# pruebas
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# logs
+npm-debug.log*
+*.log
+
+# entorno
+.env
+.env.*
+!.env.example
+
+# sistema
+.DS_Store
+__MACOSX/
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# material fuente original (ya extraído en src/assets, public/fonts y recursos/)
+*.zip
+
+# capturas de portafolios de terceros usadas solo como referencia de diagramación
+recursos/referencias/

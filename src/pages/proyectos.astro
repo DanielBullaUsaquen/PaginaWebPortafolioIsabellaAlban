@@ -1,0 +1,178 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { proyectos } from '../data/proyectos';
+---
+
+<Base
+  title="Proyectos"
+  tema="oscuro"
+  description="Proyectos de diseño editorial, identidad visual y diseño de información de Isabella Albán: ISALBÁN, No - Manual de urbanidad de bolsillo para mujeres, Those who remain silent y ¿Como, cocino cáncer?"
+>
+  <h1 class="sr-only">Proyectos</h1>
+
+  <ul class="proyectos" role="list">
+    {
+      proyectos.map((p, i) => (
+        <li class="proyecto" data-proyecto={p.id}>
+          <figure
+            class:list={['proyecto__media', { 'proyecto__media--completa': p.encuadre === 'contain' }]}
+            tabindex="0"
+            aria-labelledby={`titulo-${p.id}`}
+          >
+            <Picture
+              src={p.imagen}
+              formats={['avif', 'webp']}
+              widths={[480, 800, 1200, 1600]}
+              sizes="(min-width: 48rem) 46vw, 100vw"
+              alt={p.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+            />
+            <div class="proyecto__capa" aria-hidden="true">
+              <span class="proyecto__capa-titulo">{p.titulo}</span>
+              <span class="proyecto__capa-etiquetas">{p.etiquetas.join(' · ')}</span>
+            </div>
+          </figure>
+
+          <h2 class="proyecto__titulo" id={`titulo-${p.id}`}>
+            {p.titulo}
+          </h2>
+          <p class="proyecto__descripcion">{p.descripcion}</p>
+          <ul class="etiquetas" role="list" aria-label="Categorías">
+            {p.etiquetas.map((e) => (
+              <li>{e}</li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  /* Cuadrícula de dos columnas. Cada tarjeta usa subgrid para que
+     imágenes, títulos, descripciones y etiquetas compartan líneas,
+     aunque las descripciones tengan longitudes distintas. */
+  .proyectos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    row-gap: 0;
+    padding: var(--espacio-s) var(--margen) 0;
+  }
+
+  .proyecto {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    align-content: start;
+    margin-bottom: var(--espacio-l);
+  }
+
+  .proyecto__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #111;
+    cursor: default;
+    margin-bottom: 1.15rem;
+  }
+
+  .proyecto__media :global(picture),
+  .proyecto__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Piezas que deben verse completas (logotipo): sobre su propio blanco */
+  .proyecto__media--completa {
+    background: var(--blanco);
+  }
+
+  .proyecto__media--completa :global(img) {
+    object-fit: contain;
+    padding: 6%;
+  }
+
+  .proyecto__capa {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: 0.6rem;
+    padding: var(--espacio-m);
+    text-align: center;
+    color: var(--blanco);
+    background: rgb(0 0 0 / 0.66);
+    opacity: 0;
+    transition: opacity var(--duracion) var(--curva);
+  }
+
+  .proyecto__capa-titulo {
+    font-size: clamp(1.35rem, 0.9rem + 1.6vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .proyecto__capa-etiquetas {
+    font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1.05rem);
+    font-style: italic;
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  /* Escritorio: hover. Teclado y táctil: el foco (un toque) muestra la capa. */
+  @media (hover: hover) {
+    .proyecto__media:hover .proyecto__capa {
+      opacity: 1;
+    }
+  }
+
+  .proyecto__media:focus-visible .proyecto__capa,
+  .proyecto__media:focus .proyecto__capa {
+    opacity: 1;
+  }
+
+  .proyecto__media:focus-visible {
+    outline-offset: 3px;
+  }
+
+  .proyecto__titulo {
+    font-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+
+  .proyecto__descripcion {
+    max-width: 52ch;
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.12rem);
+    line-height: 1.5;
+    color: var(--gris);
+    margin-bottom: 0.9rem;
+  }
+
+  .etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+    gap: 0.5rem;
+  }
+
+  .etiquetas li {
+    padding: 0.3em 0.75em 0.35em;
+    border-radius: 6px;
+    background: #1c1c1c;
+    color: #d6d6d6;
+    font-size: 0.92rem;
+    line-height: 1.3;
+  }
+
+  @media (max-width: 48rem) {
+    .proyectos {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,161 @@
+---
+import { getImage } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import fondo from '../assets/imagenes/inicio.png';
+
+const correo = 'isabellaalbanfernandez@gmail.com';
+const telefono = { visible: '(+57) 320 612 4139', enlace: '+573206124139' };
+
+const redes = [
+  { nombre: 'WhatsApp', icono: 'ri:whatsapp-line', href: 'https://wa.me/573206124139' },
+  { nombre: 'Correo electrónico', icono: 'ri:mail-line', href: `mailto:${correo}` },
+  { nombre: 'LinkedIn', icono: 'ri:linkedin-line', href: 'https://www.linkedin.com/in/isabella-alban-2048a6436' },
+  { nombre: 'Instagram', icono: 'ri:instagram-line', href: 'https://www.instagram.com/andreadesignery' },
+  { nombre: 'Behance', icono: 'ri:behance-line', href: 'https://www.behance.net/isabellalbnf' },
+];
+
+const fondoWebp = await getImage({ src: fondo, format: 'webp' });
+---
+
+<Base
+  title="Contacto"
+  tema="imagen"
+  description="Contacta a Isabella Albán (ISALBÁN) por correo, teléfono, WhatsApp, LinkedIn, Instagram o Behance y trabajemos juntos por tu proyecto."
+>
+  <div class="contacto-fondo" aria-hidden="true" style={`--fondo-img: url('${fondoWebp.src}')`}></div>
+
+  <section class="contacto">
+    <h1 class="contacto__titulo">Contacto</h1>
+
+    <p class="contacto__mensaje">
+      Si te gustó mi trabajo y mi mirada del diseño, contáctame y <strong>¡Trabajemos juntos por tu proyecto!</strong>
+    </p>
+
+    <address class="contacto__datos">
+      <a href={`mailto:${correo}`}>{correo}</a>
+      <a href={`tel:${telefono.enlace}`}>{telefono.visible}</a>
+    </address>
+
+    <ul class="contacto__redes" role="list">
+      {
+        redes.map(({ nombre, icono, href }) => {
+          const externo = href.startsWith('http');
+          return (
+            <li>
+              <a
+                href={href}
+                aria-label={externo ? `${nombre} (se abre en una pestaña nueva)` : nombre}
+                title={nombre}
+                data-red={nombre}
+                {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                <Icon name={icono} aria-hidden="true" />
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  /* Imagen de fondo fija a pantalla completa con un velo negro discreto
+     que garantiza el contraste del texto. */
+  .contacto-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(rgb(0 0 0 / 0.58), rgb(0 0 0 / 0.58)),
+      var(--fondo-img) center / cover no-repeat,
+      var(--negro);
+  }
+
+  .contacto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacio-m);
+    padding: var(--espacio-m) var(--margen) var(--espacio-l);
+    text-align: center;
+  }
+
+  .contacto__titulo {
+    font-size: clamp(3rem, 2rem + 4.5vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .contacto__mensaje {
+    max-width: 30ch;
+    font-size: clamp(1.3rem, 1rem + 1.25vw, 2.1rem);
+    font-style: italic;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .contacto__mensaje strong {
+    font-weight: 700;
+  }
+
+  .contacto__datos {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: var(--espacio-s);
+    font-style: normal;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+  }
+
+  .contacto__datos a {
+    display: inline-block;
+    padding-block: 0.3rem;
+    color: var(--texto-suave);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    text-decoration-color: transparent;
+    overflow-wrap: anywhere;
+    transition:
+      color var(--duracion) var(--curva),
+      text-decoration-color var(--duracion) var(--curva);
+  }
+
+  .contacto__datos a:hover {
+    color: var(--blanco);
+    text-decoration-color: currentColor;
+  }
+
+  .contacto__redes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.25rem, 1.5vw, 1rem);
+  }
+
+  .contacto__redes a {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    color: var(--blanco);
+    transition:
+      color var(--duracion) var(--curva),
+      background-color var(--duracion) var(--curva);
+  }
+
+  .contacto__redes a:hover {
+    background: var(--blanco);
+    color: var(--negro);
+  }
+
+  .contacto__redes :global(svg) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+</style>

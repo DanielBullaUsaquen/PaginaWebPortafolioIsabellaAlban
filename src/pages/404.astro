@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Página no encontrada" description="La página que buscas no existe.">
+  <section class="error">
+    <h1>404</h1>
+    <p>Esta página no existe. <a href="/">Volver al inicio</a></p>
+  </section>
+</Base>
+
+<style>
+  .error {
+    flex: 1;
+    display: grid;
+    place-content: center;
+    gap: 1rem;
+    padding: var(--margen);
+    text-align: center;
+  }
+
+  h1 {
+    font-size: clamp(4rem, 3rem + 6vw, 9rem);
+    font-weight: 900;
+  }
+
+  p {
+    font-size: 1.2rem;
+    font-style: italic;
+  }
+
+  a {
+    text-underline-offset: 0.3em;
+  }
+</style>

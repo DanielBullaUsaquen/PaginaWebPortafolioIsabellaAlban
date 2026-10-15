@@ -1,0 +1,49 @@
+---
+/**
+ * Firma tipográfica: inicial en Playfair Display Italic (recurso editorial,
+ * como en la referencia) y el resto en versales Black.
+ */
+interface Props {
+  lineas: string[];
+  as?: 'h1' | 'p';
+  class?: string;
+}
+
+const { lineas, as: Etiqueta = 'p', class: clase } = Astro.props;
+const [primera = '', ...resto] = lineas;
+---
+
+<Etiqueta class:list={['nombre', clase]}>
+  <span class="sr-only">{lineas.join(' ')}</span>
+  <span aria-hidden="true" class="nombre__visual">
+    <span class="nombre__linea"><span class="nombre__inicial">{primera.charAt(0)}</span>{primera.slice(1)}</span>
+    {resto.map((linea) => <span class="nombre__linea">{linea}</span>)}
+  </span>
+</Etiqueta>
+
+<style>
+  .nombre {
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .nombre__visual {
+    display: block;
+  }
+
+  .nombre__linea {
+    display: block;
+  }
+
+  .nombre__inicial {
+    display: inline-block;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.32em;
+    line-height: 0;
+    margin-right: 0.02em;
+    text-transform: none;
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Nombre from '../components/Nombre.astro';
+import inicio from '../assets/imagenes/inicio.png';
+
+const campos = ['Diseño editorial', 'Diseño de identidad visual', 'Diseño de información'];
+---
+
+<Base
+  title="Inicio"
+  description="Portafolio de Isabella Andrea Albán Fernández (ISALBÁN), diseñadora de comunicación visual: diseño editorial, identidad visual y diseño de información."
+>
+  <section class="portada">
+    <Picture
+      src={inicio}
+      formats={['avif', 'webp']}
+      alt=""
+      class="portada__imagen"
+      loading="eager"
+      fetchpriority="high"
+    />
+
+    <ul class="portada__campos" role="list" aria-label="Campos de trabajo">
+      {campos.map((campo) => <li>{campo}</li>)}
+    </ul>
+
+    <div class="portada__firma">
+      <p class="portada__oficio">Comunicación visual</p>
+      <Nombre as="h1" lineas={['Isabella', 'Albán']} class="portada__nombre" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .portada {
+    position: relative;
+    isolation: isolate;
+    flex: 1;
+    margin: 0 var(--margen) var(--margen);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: clamp(26rem, 72svh, 60rem);
+    padding: clamp(1.5rem, 6vw, 6rem) clamp(1.25rem, 5vw, 5.5rem);
+    color: var(--blanco);
+    overflow: hidden;
+  }
+
+  .portada :global(picture),
+  .portada__imagen {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+  }
+
+  .portada__imagen {
+    object-fit: cover;
+    object-position: center 60%;
+  }
+
+  /* Contraste discreto: oscurece levemente la esquina del texto
+     sin alterar la fotografía. */
+  .portada::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(160deg, rgb(0 0 0 / 0.28), transparent 45%);
+    pointer-events: none;
+  }
+
+  .portada__campos {
+    align-self: start;
+    font-size: clamp(1.6rem, 1rem + 2.9vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    text-transform: uppercase;
+  }
+
+  .portada__firma {
+    justify-self: end;
+    display: grid;
+    justify-items: end;
+    gap: 0.75rem;
+    text-align: right;
+  }
+
+  .portada__oficio {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: clamp(0.8rem, 0.7rem + 0.4vw, 1.1rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .portada :global(.portada__nombre) {
+    font-size: clamp(2rem, 1.2rem + 3.4vw, 4.5rem);
+  }
+
+  @media (max-width: 40rem) {
+    .portada {
+      min-height: calc(100svh - 6.5rem);
+    }
+  }
+</style>

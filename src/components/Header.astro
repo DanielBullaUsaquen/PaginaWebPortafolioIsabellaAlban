@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/imagenes/logo-ojo.png';
+
+const enlaces = [
+  { href: '/proyectos/', texto: 'Proyectos' },
+  { href: '/sobre-mi/', texto: 'Sobre mí' },
+  { href: '/contacto/', texto: 'Contacto' },
+];
+
+const ruta = Astro.url.pathname.replace(/\/?$/, '/');
+---
+
+<header class="cabecera">
+  <a class="cabecera__logo" href="/" aria-label="ISALBÁN — ir al inicio" aria-current={ruta === '/' ? 'page' : undefined}>
+    <Image src={logo} alt="" width={64} densities={[1, 2]} loading="eager" />
+  </a>
+
+  <nav aria-label="Principal">
+    <ul class="cabecera__menu" role="list">
+      {
+        enlaces.map(({ href, texto }) => (
+          <li>
+            <a href={href} aria-current={ruta === href ? 'page' : undefined}>
+              {texto}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .cabecera {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: clamp(1rem, 2.6vw, 2.25rem) var(--margen);
+    view-transition-name: cabecera;
+  }
+
+  /* El ojo de ISALBÁN vive en un sello circular blanco: así conserva
+     sus negros sobre cualquier fondo de la paleta. */
+  .cabecera__logo {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: clamp(2.75rem, 2.2rem + 2vw, 4rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--blanco);
+  }
+
+  .cabecera__logo img {
+    width: 74%;
+    height: auto;
+  }
+
+  .cabecera__menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.25rem, 2.2vw, 2.75rem);
+  }
+
+  .cabecera__menu a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 0.4rem;
+    font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.3rem);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--duracion) var(--curva);
+  }
+
+  .cabecera__menu a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .cabecera__menu a[aria-current='page'] {
+    font-style: italic;
+    font-weight: 500;
+    text-decoration-color: currentColor;
+  }
+
+  @media (max-width: 22rem) {
+    .cabecera__menu a {
+      padding-inline: 0.25rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>

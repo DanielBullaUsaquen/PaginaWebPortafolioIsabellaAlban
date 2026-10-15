@@ -1,0 +1,204 @@
+/* ==========================================================================
+   ISALBÁN — sistema visual
+   Tipografía: Playfair Display (archivos suministrados, servidos localmente)
+   Paleta: 4 principales + 4 secundarios (ver brief)
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-VariableFont_wght.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Italic-VariableFont_wght.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Principales */
+  --negro: #000000;
+  --blanco: #ffffff;
+  --rojo: #e30613;
+  --azul: #0180ff;
+  /* Secundarios */
+  --gris: #8a8a8a;
+  --vinotinto: #7a0f15;
+  --azul-oscuro: #0f2a47;
+  --verde-oscuro: #081208;
+
+  --fuente: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  /* Espaciado fluido */
+  --margen: clamp(1rem, 4.5vw, 5rem);
+  --espacio-s: clamp(0.75rem, 1.5vw, 1.25rem);
+  --espacio-m: clamp(1.5rem, 3vw, 2.5rem);
+  --espacio-l: clamp(2.5rem, 6vw, 5.5rem);
+
+  /* Movimiento */
+  --curva: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duracion: 320ms;
+
+  /* Tema por defecto (se redefine por página) */
+  --fondo: var(--blanco);
+  --texto: var(--negro);
+  --texto-suave: #4d4d4d;
+
+  color-scheme: light;
+}
+
+/* Temas de página ------------------------------------------------------- */
+.tema-claro {
+  --fondo: var(--blanco);
+  --texto: var(--negro);
+}
+
+.tema-oscuro {
+  --fondo: var(--negro);
+  --texto: var(--blanco);
+  --texto-suave: var(--gris);
+  color-scheme: dark;
+}
+
+.tema-vino {
+  --fondo: var(--vinotinto);
+  --texto: var(--blanco);
+  --texto-suave: rgb(255 255 255 / 0.82);
+  color-scheme: dark;
+}
+
+.tema-imagen {
+  --fondo: var(--negro);
+  --texto: var(--blanco);
+  --texto-suave: rgb(255 255 255 / 0.8);
+  color-scheme: dark;
+}
+
+/* Reset mínimo ---------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+/* Foco visible y consistente: hereda el color del texto para contrastar
+   con cualquier fondo de la paleta. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saltar {
+  position: absolute;
+  left: var(--margen);
+  top: -100px;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--blanco);
+  color: var(--negro);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.saltar:focus {
+  top: 1rem;
+}
+
+/* Transición discreta entre páginas (sin JavaScript) */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

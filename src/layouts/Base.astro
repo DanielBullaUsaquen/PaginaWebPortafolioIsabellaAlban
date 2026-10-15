@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+
+export type Tema = 'claro' | 'oscuro' | 'vino' | 'imagen';
+
+interface Props {
+  title: string;
+  description: string;
+  tema?: Tema;
+}
+
+const { title, description, tema = 'claro' } = Astro.props;
+const tituloCompleto = title === 'Inicio' ? 'ISALBÁN — Isabella Albán, diseño editorial' : `${title} — ISALBÁN`;
+const colorTema = { claro: '#ffffff', oscuro: '#000000', vino: '#7a0f15', imagen: '#000000' }[tema];
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImage = Astro.site ? new URL('/og-image.jpg', Astro.site).href : '/og-image.jpg';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Isabella Andrea Albán Fernández" />
+    <meta name="theme-color" content={colorTema} />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/PlayfairDisplay-VariableFont_wght.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="ISALBÁN" />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class={`tema-${tema}`}>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+  </body>
+</html>
